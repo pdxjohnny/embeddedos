@@ -13,7 +13,7 @@ ASFLAGS=-g -mcpu=cortex-a8
 LDFLAGS=-T linker.ld
 # This says to grab all the files with the c extension in this directory and
 # make them the array called SRC_SOURCES
-SRC_SOURCES=$(wildcard *.s) $(wildcard arch/$(ARCH)/*.s)
+SRC_SOURCES=$(wildcard user/*.s) $(wildcard kernel/*.s) $(wildcard arch/$(ARCH)/*.s)
 # This makes an array of all the c files but replaces .c with .o
 SRC_OBJECTS=$(SRC_SOURCES:.s=.o)
 
@@ -39,7 +39,7 @@ $(SRC): $(SRC_OBJECTS)
 # Clean deletes everything that gets created when you run the build. This means
 # all the .o files and the binary named $(SRC)
 clean:
-	rm -f $(SRC) *.o *.tar.xz *.core *.elf *.bin
+	rm -f $(SRC) $(SRC_OBJECTS) *.xz *.gz *.core *.elf *.bin
 
 # This creates the tar file for submission
 tar:

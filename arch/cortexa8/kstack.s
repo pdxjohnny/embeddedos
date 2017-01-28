@@ -13,4 +13,4 @@ STACK:
   .byte 0x00
   .endr
 
-.END
+.end
