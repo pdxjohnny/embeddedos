@@ -4,7 +4,7 @@ SECTIONS
   . = 0x70010000;
   .text : ALIGN(0x1000) {
     _TEXT_START_ = .;
-    kernel/entry.o( .text )
+    kernel/arm/entry.o( .text )
     *(.text)
     _TEXT_END_ = .;
   }

@@ -9,6 +9,6 @@ _start:
   BL syscall_setup
   @ Switch to the user mode application, user_main
   LDR lr, =user_main
-  B switch_to_usermode
+  BL switch_to_usermode
 
 .end
