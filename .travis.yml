@@ -15,10 +15,3 @@ install:
   - export PATH=$PATH:$GCC_DIR/bin
 script:
 - make clean all tar
-deploy:
-  provider: releases
-  api_key:
-    secure: r9Gxcq3/aejgui4yFQgPAAyw32ttXEZejSqiIyGdOX8pETff6XtyUzKB47pxSU/EO8s78CatL7eEXFjwOFvFeZnJPmozNcijrHfLWCeCQ4m6xxsBS7+wMl+I4/ufzGOsyXR01ijW4EnN5NQWiIDhGH5NBr+Aq76GSDe005k8reqEDNaQJwyKIVqgx5laRXqONfiDeGEOtXbTAFmr+Qxn2SWHc1iJM+65hqYqZBUYUw7uva7Zlqjr95U4tcU4LsBQ4f+IIe+Z96Zvm84Q2291RJDOa1yviv0vJrJjkrl1dLpiTaNL3fGkRiu8jVSkK3Xh8gaUOlgtkqpZX14TkoEXzznYMvPQoRlKisEqz2zHwN4PgvDJ9tTJ/e0Zt71yyUYvdEuujpKdHGPKhus78k+Dj9ilPBHu/YbhHcN0JBZfsE7xOty2ENw2eZsiOvuVoekm40pVrbQ+97gcSPOvcLoKtN1LIYv6mosOYzBUCFTKbyqT87GxqrhdTgUmAWX8bDZR3NwUjRo8P6u4hXWZ+vnR08XVD5b3t9D6A+LopvcCid6VlUjOyoLIvBY728BSxSFnc1MFUaDKiRROHTFkniXddXy6f+UvBhp5TWAC7xmCvMJ/3PA9ITtdYm2VknLvL5H5eamu8R7LB5ceWXogHZFZ/7MpgUg60Mu2fbN52LGjnwM=
-  file: embeddedos-0.0.1.tar.gz
-  on:
-    repo: pdxjohnny/embeddedos
