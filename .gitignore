@@ -5,3 +5,4 @@ qemu_*
 *.swp
 *.bin
 *.elf
+*.gz

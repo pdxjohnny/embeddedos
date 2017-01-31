@@ -2,7 +2,7 @@
 NAME=embeddedos
 # Version
 VERSION=0.0.1
-RELEASE=$(NAME)-$(RELEASE)
+RELEASE=$(NAME)-$(VERSION)
 # Set the architecture, variant, and microprocessor you are building for
 ARCH:=arm
 CPU:=cortex_a8

@@ -1,8 +1,67 @@
-# Embedded OS
+# Embedded OS [![Build Status](https://travis-ci.org/pdxjohnny/embeddedos.svg?branch=master)](https://travis-ci.org/pdxjohnny/embeddedos)
 
 This is an OS with a user mode and kernel mode which strives to use syscalls to
 do work with memory mapped devices and keep most of the non hardware oriented
 tasks in user mode.
+
+## Architecture Overview
+
+Directory structure
+
+```
+embeddedos
+│
+├── arch
+│   └── arm
+│       ├── cortex_a8
+│       │   └── realview_pb_a8
+│       │       └── linker.ld
+│       ├── kstack.S
+│       └── syscall.S
+├── Dockerfile
+├── include
+│   ├── arm
+│   │   └── cortex_a8
+│   │       └── realview_pb_a8.h
+│   ├── processor.h
+│   └── README.md
+├── kernel
+│   └── arm
+│       └── entry.S
+├── LICENSE
+├── Makefile
+├── README.md
+└── user
+    └── arm
+        └── entry.S
+```
+
+### arch/
+
+Processor and architecture specific code should go in arch. These are things
+like how you interact with a UART on a specific processor. Things which require
+you to look at the processors data sheet should most likely go here.
+
+### include/
+
+Include should have a file for each microprocessor defining essentially what
+you see in the processors data sheet. These files should be named after their
+microprocessors and contain the information which would be found in those
+processors data sheets, such as memory locations and constants that get written
+to them.
+
+### kernel/
+
+The kernel should be written in an architecture and microprocessor independent
+fashion. It contains scheduling, memory management and other universally
+applicable code.
+
+### user/
+
+After initialization the kernel changes to user mode and executes the code at
+`user_main`, which is responsible for setting up the user mode stack.
+`user_main` should then jump to some architecture independent code which makes
+use of the kernel though system calls to do work on devices.
 
 ## Dependencies
 
