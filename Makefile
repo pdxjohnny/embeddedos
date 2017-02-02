@@ -7,6 +7,8 @@ RELEASE=$(NAME)-$(VERSION)
 ARCH:=arm
 CPU:=cortex_a8
 UP:=realview_pb_a8
+# The drivers we are using
+DRIVERS:=uart/pl011
 # The compiler uses dashes instead of underscores for the mcpu selection
 MCPU=$(subst _,-,$(CPU))
 # QEMU uses machine names with dashes which won't work with the preprocessor so
@@ -25,7 +27,7 @@ ifeq ($(ARCH),arm)
 endif
 # Compiler flags
 CFLAGS=-g -DARCH=$(ARCH) -DCPU=$(CPU) -DUP=$(UP) -D$(UP)=$(UP)
-CFLAGS+=-nostdinc -nostdinc++ -I ./include -L./include
+CFLAGS+=-nostdinc -ffreestanding -I ./include -L./include
 ifeq ($(ARCH),arm)
 	CFLAGS += -mcpu=$(MCPU)
 endif
@@ -37,8 +39,14 @@ ASM_SOURCES=$(wildcard user/*.S) $(wildcard user/$(ARCH)/*.S)
 ASM_SOURCES+=$(wildcard kernel/*.S) $(wildcard kernel/$(ARCH)/*.S)
 ASM_SOURCES+=$(wildcard arch/$(ARCH)/*.S) $(wildcard arch/$(ARCH)/$(CPU)/*.S)
 ASM_SOURCES+=$(wildcard arch/$(ARCH)/$(CPU)/$(UP)/*.S)
+C_SOURCES=$(wildcard user/*.c) $(wildcard user/$(ARCH)/*.c)
+C_SOURCES+=$(wildcard kernel/*.c) $(wildcard kernel/$(ARCH)/*.c)
+C_SOURCES+=$(wildcard arch/$(ARCH)/*.c) $(wildcard arch/$(ARCH)/$(CPU)/*.c)
+C_SOURCES+=$(wildcard arch/$(ARCH)/$(CPU)/$(UP)/*.c)
+C_SOURCES+=$(foreach dir,$(DRIVERS),drivers/$(dir).c)
 # This makes an array of all the c files but replaces .S with .o
 ASM_OBJECTS=$(ASM_SOURCES:.S=.o)
+C_OBJECTS=$(C_SOURCES:.c=.o)
 
 # When you run make then all is the default command to run. So running `make` is
 # the same as running `make all`
@@ -47,9 +55,9 @@ all: $(NAME)
 # This says to build $(NAME) then all the o files need to be present / up to
 # date first. The way they get up to date is by compiling the c files in to
 # their respective o files
-$(NAME): $(ASM_OBJECTS)
+$(NAME): $(ASM_OBJECTS) $(C_OBJECTS)
 	@# The $@ variable gets replaced with $(NAME)
-	$(LINKER) $(LDFLAGS) $(ASM_OBJECTS) -o $@.elf
+	$(LINKER) $(LDFLAGS) $(ASM_OBJECTS) $(C_OBJECTS) -o $@.elf
 	@# Make the elf a binary
 	$(OBJCOPY) -O binary $@.elf $@.bin
 
@@ -57,6 +65,9 @@ $(NAME): $(ASM_OBJECTS)
 # Every S file in the array ASM_SOURCES is compiled to its object file for
 # before being linked together
 %.o:%.S
+	$(CC) $(CFLAGS) -c $< -o $@
+
+%.o:%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Clean deletes everything that gets created when you run the build. This means
