@@ -12,15 +12,6 @@ syscall_setup:
   STR r1, [r0]
   LDMFD sp!, {r0-r1, pc}
 
-syscall_handler:
-  @ Save all registers
-  STMFD sp!, {r1-r12, lr}
-  @ Do some operation, decide correct syscall to call
-  ADD r0, #40
-  @ Restore registers and switch back to usermode
-  LDMFD sp!, {r1-r12, lr}
-  B switch_to_usermode
-
 .global switch_to_usermode
 switch_to_usermode:
   STMFD sp!, {r0}

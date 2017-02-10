@@ -5,4 +5,6 @@
 
 #define UART0               0x10009000
 
+#define DEVICE_UART0        0x01
+
 #endif

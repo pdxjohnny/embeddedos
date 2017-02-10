@@ -7,6 +7,10 @@ RELEASE=$(NAME)-$(VERSION)
 ARCH:=arm
 CPU:=cortex_a8
 UP:=realview_pb_a8
+# Kernel functionality we want
+KFUNC=syscall
+# The libaries we want to use
+LIBS=syscall
 # The drivers we are using
 DRIVERS:=uart/pl011
 # The compiler uses dashes instead of underscores for the mcpu selection
@@ -39,11 +43,14 @@ ASM_SOURCES=$(wildcard user/*.S) $(wildcard user/$(ARCH)/*.S)
 ASM_SOURCES+=$(wildcard kernel/*.S) $(wildcard kernel/$(ARCH)/*.S)
 ASM_SOURCES+=$(wildcard arch/$(ARCH)/*.S) $(wildcard arch/$(ARCH)/$(CPU)/*.S)
 ASM_SOURCES+=$(wildcard arch/$(ARCH)/$(CPU)/$(UP)/*.S)
+# ASM_SOURCES+=$(foreach dir,$(KFUNC),kernel/$(dir)/*.S)
 C_SOURCES=$(wildcard user/*.c) $(wildcard user/$(ARCH)/*.c)
 C_SOURCES+=$(wildcard kernel/*.c) $(wildcard kernel/$(ARCH)/*.c)
+C_SOURCES+=$(foreach dir,$(KFUNC),kernel/$(dir)/*.c)
 C_SOURCES+=$(wildcard arch/$(ARCH)/*.c) $(wildcard arch/$(ARCH)/$(CPU)/*.c)
 C_SOURCES+=$(wildcard arch/$(ARCH)/$(CPU)/$(UP)/*.c)
 C_SOURCES+=$(foreach dir,$(DRIVERS),drivers/$(dir).c)
+C_SOURCES+=$(foreach dir,$(LIBS),lib/$(dir).c)
 # This makes an array of all the c files but replaces .S with .o
 ASM_OBJECTS=$(ASM_SOURCES:.S=.o)
 C_OBJECTS=$(C_SOURCES:.c=.o)
@@ -73,7 +80,7 @@ $(NAME): $(ASM_OBJECTS) $(C_OBJECTS)
 # Clean deletes everything that gets created when you run the build. This means
 # all the .o files and the binary named $(NAME)
 clean:
-	rm -f $(NAME) $(ASM_OBJECTS) *.xz *.gz *.core *.elf *.bin
+	rm -f $(NAME) $(C_OBJECTS) $(ASM_OBJECTS) *.xz *.gz *.core *.elf *.bin
 
 # This creates the tar file from the latest git commit
 tar:
