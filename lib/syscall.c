@@ -1,6 +1,6 @@
 #include <syscall.h>
 
-static  int call(uint32_t syscall_number, uint32_t a1, uint32_t a2, uint32_t a3, uint32_t a4) {
+static int call(uint32_t syscall_number, uint32_t a1, uint32_t a2, uint32_t a3, uint32_t a4) {
   int ret = -1;
   asm volatile (
       "MOV r4, %1\n"
@@ -18,5 +18,13 @@ static  int call(uint32_t syscall_number, uint32_t a1, uint32_t a2, uint32_t a3,
 }
 
 int device(uint32_t device) {
-  return call(SYSCALL_DEVICE, device, 69, 42, 1337);
+  return call(SYSCALL_DEVICE, device, 0, 0, 0);
+}
+
+int write(int fd, char *buf, uint32_t buf_len) {
+  return call(SYSCALL_WRITE, fd, (uint32_t)buf, buf_len, 0);
+}
+
+int read(int fd, char *buf, uint32_t buf_len) {
+  return call(SYSCALL_READ, fd, (uint32_t)buf, buf_len, 0);
 }
