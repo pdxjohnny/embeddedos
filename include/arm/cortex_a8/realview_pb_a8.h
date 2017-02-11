@@ -1,3 +1,5 @@
+#ifndef REALVIEW_PB_A8_H
+#define REALVIEW_PB_A8_H
 #ifdef realview_pb_a8
 
 #define STACK_SIZE          0x00001000
@@ -7,4 +9,5 @@
 
 #define DEVICE_UART0        0x01
 
+#endif
 #endif

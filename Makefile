@@ -10,7 +10,7 @@ UP:=realview_pb_a8
 # Kernel functionality we want
 KFUNC=syscall
 # The libaries we want to use
-LIBS=syscall
+LIBS=syscall mm
 # The drivers we are using
 DRIVERS:=uart/pl011
 # The compiler uses dashes instead of underscores for the mcpu selection

@@ -1,3 +1,5 @@
+#ifndef PL011_H
+#define PL011_H
 #define UARTDR(X)           (X + 0x000)
 #define UARTRSR             (X + 0x004)
 #define UARTECR             (X + 0x004)
@@ -29,3 +31,4 @@
  * \param buad The buad rate at which the UART communicates.
 */
 void uart_setup(int uart_addr, int fifo_en, int buad);
+#endif

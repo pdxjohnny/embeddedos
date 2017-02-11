@@ -1,3 +1,5 @@
+#ifndef SYSCALL_H
+#define SYSCALL_H
 #include <stdint.h>
 
 #define SYSCALL_DEVICE 0x000000
@@ -13,3 +15,4 @@ int device(uint32_t device);
 
 int write(int fd, char *buf, uint32_t buf_len);
 int read(int fd, char *buf, uint32_t buf_len);
+#endif
